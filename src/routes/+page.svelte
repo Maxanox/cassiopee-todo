@@ -2,6 +2,10 @@
 	import { onMount } from 'svelte';
 	import { todosStore } from '$lib/todos.svelte';
 	import TodoItem from '$lib/components/TodoItem.svelte';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+
+	const commit = __APP_COMMIT__;
+	const tag = __APP_TAG__;
 
 	type Filter = 'all' | 'active' | 'done';
 
@@ -36,7 +40,10 @@
 </svelte:head>
 
 <main>
-	<h1>Todo</h1>
+	<header>
+		<h1>Todo</h1>
+		<ThemeToggle />
+	</header>
 
 	<form onsubmit={handleSubmit} class="add-form">
 		<input
@@ -98,6 +105,10 @@
 	</div>
 
 	<p class="hint">Double-cliquez sur une tâche pour la modifier. Tout est sauvegardé dans votre navigateur.</p>
+
+	<p class="version" title={commit || undefined}>
+		{tag || 'sans tag'} · {commit ? commit.slice(0, 7) : 'dev'}
+	</p>
 </main>
 
 <style>
@@ -107,9 +118,16 @@
 		padding: 3rem 1.25rem 4rem;
 	}
 
+	header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 1.5rem;
+	}
+
 	h1 {
 		font-size: 1.75rem;
-		margin: 0 0 1.5rem;
+		margin: 0;
 	}
 
 	.add-form {
@@ -228,5 +246,13 @@
 		font-size: 0.8rem;
 		color: var(--text-muted);
 		text-align: center;
+	}
+
+	.version {
+		margin: 0.5rem 0 0;
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		text-align: center;
+		font-family: ui-monospace, monospace;
 	}
 </style>

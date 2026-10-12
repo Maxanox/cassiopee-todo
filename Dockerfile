@@ -7,6 +7,11 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+
+# Deployed version, shown in the UI footer.
+ARG APP_COMMIT=""
+ARG APP_TAG=""
+ENV APP_COMMIT=$APP_COMMIT APP_TAG=$APP_TAG
 RUN npm run build
 
 # Install only production deps in a separate folder, copied into the

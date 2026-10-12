@@ -3,6 +3,7 @@ name: Build and publish Docker image
 on:
   push:
     branches: [main]
+    tags: ['v*']
   workflow_dispatch:
 
 env:
@@ -38,12 +39,16 @@ jobs:
           tags: |
             type=raw,value=latest
             type=sha,format=short
+            type=ref,event=tag
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
+          build-args: |
+            APP_COMMIT=${{ github.sha }}
+            APP_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

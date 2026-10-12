@@ -3,6 +3,11 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	// Build metadata injected by the Dockerfile / CI (see APP_COMMIT, APP_TAG).
+	define: {
+		__APP_COMMIT__: JSON.stringify(process.env.APP_COMMIT ?? ''),
+		__APP_TAG__: JSON.stringify(process.env.APP_TAG ?? '')
+	},
 	plugins: [
 		sveltekit({
 			compilerOptions: {
